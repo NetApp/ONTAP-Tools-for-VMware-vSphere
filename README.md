@@ -1,4 +1,4 @@
-### Automated deployment of ONTAP Tools for VMWare vSphere using Ansible
+### Automated deployment of ONTAP Tools for VMware vSphere using Ansible
  
 This repository contains Ansible roles and playbooks for an automated deployment of ONTAP Tools for VMware vSphere.
 
