@@ -70,7 +70,7 @@ A playbook by name 'Setup_ONTAP_tools.yml' is available at the root of this repo
 
 Execute the playbook from the Ansible Control machine as an admin/ root user using the following command:
 
-	ansible-playbook -i inventory Setup_ONTAP_tools.yml
+	ansible-playbook -i hosts Setup_ONTAP_tools.yml
 
 ### Authors
 
