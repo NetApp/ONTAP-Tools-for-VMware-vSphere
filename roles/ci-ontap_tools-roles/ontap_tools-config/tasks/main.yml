@@ -1,8 +1,8 @@
 ---
-# Set the network name dicttionary
+# Set the network name dictionary
 - name: Set the network name dictionary
   set_fact:
-    vm_network_dict: '{ "VM Network": "{{ vm_network }}" }'
+    vm_network_dict: '{ "nat": "{{ vm_network }}" }'
   tags:
     - network_name
 
