@@ -27,6 +27,7 @@
     properties:
       vplatform.vpserver.passwd: '{{ app_user_passwd }}'
       vplatform.maint.passwd: '{{ maint_user_passwd }}'
+      vplatform.derby.passwd: '{{ derby_db_passwd }}'
       vplatform.vappliance.ntp.servers: '{{ ntp_server }}'
       vplatform.vcenter.register.ipAddress: '{{ inventory_hostname }}'
       vplatform.vcenter.register.port: '{{ vm_port }}'
