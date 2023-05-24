@@ -33,6 +33,9 @@ app_user_passwd: "password"
 #Maintenance User Password
 maint_user_passwd: "password"
 
+#Derby Database Password
+derby_db_passwd: "password"
+
 #Specify the hostname for the appliance
 ontap_tools_hostname: "ontap-tools"
 
