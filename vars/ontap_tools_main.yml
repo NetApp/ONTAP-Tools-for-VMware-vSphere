@@ -7,7 +7,7 @@ ontap_user: admin
 ontap_password: password
 
 #Path to OVF or OVA file to deploy.
-ova_path: "/root/ova/netapp-ontap-tools-for-vmware-vsphere-9.8-7032.ova"
+ova_path: "/home/admin/Downloads/netapp-ontap-tools-for-vmware-vsphere-9.12-9342.ova"
 
 #Name of the VM to work with
 vm_name: netapp-ontap-tools
@@ -36,7 +36,7 @@ maint_user_passwd: "password"
 #Derby Database Password
 derby_db_passwd: "password"
 
-#Specify the hostname for the appliance
+#Specify the hostname for the ONTAP tools appliance
 ontap_tools_hostname: "ontap-tools"
 
 #IP address for the appliance
