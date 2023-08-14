@@ -1,10 +1,10 @@
 ---
 # Set the network name dictionary
 - name: Set the network name dictionary
-  set_fact:
+  ansible.builtin.set_fact:
     vm_network_dict: '{ "nat": "{{ vm_network }}" }'
   tags:
-    - network_name
+    - ontap_tools_setup
 
 # Deploy ONTAP tools in vCenter
 - name: Deploy ONTAP tools in vCenter
@@ -44,56 +44,80 @@
 
 # Induce a delay to allow for registration
 - name: Wait for ONTAP tools registration to complete
-  pause:
+  ansible.builtin.pause:
     minutes: 2
+  tags:
+    - ontap_tools_setup
 
 # Build JSON for ONTAP tools Session ID
 - name: Build JSON for ONTAP tools Session ID
-  set_fact:
-    session_id_body: '{ "vcenterPassword": "{{ vcenter_password }}",
-                        "vcenterUserName": "{{ vcenter_username }}" }'
+  ansible.builtin.set_fact:
+    session_id_body: { "vcenterPassword": "{{ vcenter_password }}",
+                       "vcenterUserName": "{{ vcenter_username }}" }
   tags:
-    - session_json
+    - ontap_cluster_add
 
-- name: Debug
-  debug:
-    var: session_id_body
-  tags:
-    - session_json
-
+# Get the user login details and generate a session (vmware-api-session-id created)
 # Generate Session ID for ONTAP tools with vCenter
 - name: Generate a Session ID for ONTAP tools with vCenter
-  uri:
+  ansible.builtin.uri:
     url: "https://{{ ontap_tools_ip }}:8143/api/rest/2.0/security/user/login"
     validate_certs: false
     method: POST
-    return_content: yes
+    return_content: true
     body_format: json
     body: "{{ session_id_body }}"
   register: login
   tags:
-    - session_id
+    - ontap_cluster_add
 
 # Print Session ID
-- debug:
-    msg: "Session Key: {{ login.json.vmwareApiSessionId }}"
+- ansible.builtin.debug:
+    msg: "Session ID: {{ login.json.vmwareApiSessionId }}"
+  tags:
+    - ontap_cluster_add
+
+# Get public certificate of ONTAP Cluster
+- name: Get public certificate of ONTAP Cluster
+  ansible.builtin.uri:
+    url: "https://{{ ontap_tools_ip }}:8143/api/rest/3.0/security/certificates/{{ ontap_cluster }}/server-certificate?trusted-certificate=false"
+    validate_certs: false
+    method: GET
+    return_content: true
+    body_format: json
+    headers:
+      vmware-api-session-id: "{{ login.json.vmwareApiSessionId }}"
+  register: cluster
+  tags:
+    - ontap_cluster_add
+
+# Print Public Certificate of ONTAP Cluster
+- ansible.builtin.debug:
+    msg: "Public certificate of ONTAP Cluster: {{ cluster.json.public_certificate }}"
+  tags:
+    - ontap_cluster_add
 
 # Build JSON to add ONTAP Cluster to ONTAP tools
 - name: Build JSON to add ONTAP Cluster to ONTAP tools
-  set_fact:
-    ontap_register_body: '{ "nameOrIpAddress": "{{ ontap_cluster }}",
-                        "password": "{{ ontap_password }}",
-                        "port": 0,
-                        "username": "{{ ontap_user }}" }'
+  ansible.builtin.set_fact:
+    ontap_register_body: { "host": "{{ ontap_cluster }}",
+                           "password": "{{ ontap_password }}",
+                           "port": 443,
+                           "public_certificate": "{{ cluster.json.public_certificate }}",
+                           "username": "{{ ontap_user }}" }
+  tags:
+    - ontap_cluster_add
 
 # Add ONTAP Cluster to ONTAP tools
 - name: Add ONTAP Cluster to ONTAP tools
-  uri:
-    url: "https://{{ ontap_tools_ip }}:8143/api/rest/2.0/storage/clusters"
+  ansible.builtin.uri:
+    url: "https://{{ ontap_tools_ip }}:8143/api/rest/3.0/storage/clusters"
     validate_certs: false
     method: POST
-    return_content: yes
+    return_content: true
     body_format: json
     body: "{{ ontap_register_body }}"
     headers:
       vmware-api-session-id: "{{ login.json.vmwareApiSessionId }}"
+  tags:
+    - ontap_cluster_add
