@@ -74,5 +74,5 @@ Execute the playbook from the Ansible Control machine as an admin/ root user usi
 
 ### Authors
 
- * Arvind Ramakrishnan (arvind.ramakrishnan@netapp.com)
- * Kamini Singh (kamini.singh@netapp.com) 
+- [Arvind Ramakrishnan](mailto:arvind.ramakrishnan@netapp.com)
+- [Kamini Singh](mailto:KAMINI.SINGH@netapp.com) - NetApp FlexPod Solutions Team
