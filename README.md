@@ -10,10 +10,10 @@ The ONTAP Tools (previously VSC) deployment is based on the following role:
 
 The automation has been tested with the below versions of software:
 
-	Storage Operating System: ONTAP 9.8 and 9.9
-	VMware vSphere: 7.0 and 7.0 U2
+	Storage Operating System: ONTAP 9.11.1, 9.12.1, and 9.13.1
+	VMware vSphere: 7.0, and 8.0
 
-### Prerequisite
+### Prerequisites
 
 1. It is assumed that a VMware vCenter instance has been setup and is available for use, similarly an ONTAP cluster that needs to be integrated with VMware vCenter will also need to be made available.
 
@@ -35,7 +35,7 @@ pip3 install requests
 1. From the Ansible Control machine Download a ZIP version of this repository or clone it using the below command:
 	
 ```
-git clone https://github.com/NetApp-Automation/ONTAP-Tools-for-VMware-vSphere.git
+git clone https://github.com/NetApp/ONTAP-Tools-for-VMware-vSphere.git
 ```
 
 2. There is a variable file under the vars folder 'ontap_tools_main.yml' for the setup of ONTAP tools for VMware vSphere, that need to be filled out with environment specific parameters prior to executing the playbook.
