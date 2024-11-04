@@ -28,7 +28,6 @@ ansible-galaxy collection install community.vmware
 pip3 install -r ~/.ansible/collections/ansible_collections/community/vmware/requirements.txt
 pip3 install requests
 pip3 install wheel
-
 ```
 
 
